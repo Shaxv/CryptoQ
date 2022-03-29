@@ -41,10 +41,17 @@
     .middleCard {
         .cardContainer { @apply h-[350px] }
     }
+    .blur { @apply absolute -top-32 right-0 pointer-events-none }
 
-    @apply mt-[-225px] flex flex-row flex-wrap max-w-full justify-center gap-x-8
+    @apply mt-[-225px] flex flex-row flex-wrap max-w-full justify-center gap-x-6 relative
 }
 
+.sectionTwo {
+    h1 { @apply text-4xl font-bold text-center }
+    .graphVector { @apply absolute right-0 -top-4 left-0 mx-auto translate-x-16 rotate-[-3.5deg] }
+    .purpleBlur { @apply absolute -right-[640px] -top-64 }
+    @apply mt-32 py-10 relative
+}
 
 @media (min-width: 2100px) {
     .header { background-image: url("/xxl_header_bg.png"); }

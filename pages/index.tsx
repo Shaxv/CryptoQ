@@ -35,7 +35,7 @@ export default function Home() {
             <i className="fas fa-sliders"></i>
             <h1>Customizable</h1>
             <div className={styles.titleBg}><div/></div>
-            <p>Enjoy your own preferences at your will. You will able to customize your experience with our service. Every last bit of it.</p>
+            <p>Enjoy your own preferences at your will. You will able to customize your experience with our service. Every last bit.</p>
           </div>
           </div>
 
@@ -59,8 +59,17 @@ export default function Home() {
           </div>
           </div>
 
+          <img src="/blur.png" className={styles.blur}/>
+
+        </section>
+
+        <section className={styles.sectionTwo}>
+          <h1>Top Cryptocurrencies</h1>
+          <img src="/graph_vector.png" className={styles.graphVector}/>
+          <img src="/purple_blur.png" className={styles.purpleBlur}/>
         </section>
       </div>
+
 
       <br/>
       <br/>

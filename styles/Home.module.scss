@@ -20,6 +20,12 @@
     @apply pt-[10rem] text-center
 }
 
+.titleBg {
+    background:linear-gradient(20deg, rgba(242, 235, 171, 1) 10%, rgba(52, 35, 242, 1) 60%, rgba(255, 49, 98, 1) 100%);
+    div { @apply bg-secondary rounded-xl h-full w-full z-0 }
+    @apply rounded-xl p-[3px] z-0
+}
+
 .sectionOne {
     .cardContainer {
         background:linear-gradient(20deg, rgba(242, 235, 171, 1) 10%, rgba(52, 35, 242, 1) 60%, rgba(255, 49, 98, 1) 100%);
@@ -31,9 +37,7 @@
         i { @apply absolute text-4xl -top-6 right-1/2 translate-x-5 }
         
         .titleBg {
-            background:linear-gradient(20deg, rgba(242, 235, 171, 1) 10%, rgba(52, 35, 242, 1) 60%, rgba(255, 49, 98, 1) 100%);
-            div { @apply bg-secondary rounded-xl h-full w-full z-0 }
-            @apply rounded-xl w-[120px] h-3 p-[3px] -mt-[10px] z-0
+            @apply w-[120px] h-3 -mt-[10px]
         }
         
         @apply p-6 bg-secondary rounded-md w-full h-full text-left
@@ -48,8 +52,29 @@
 
 .sectionTwo {
     h1 { @apply text-4xl font-bold text-center }
-    .graphVector { @apply absolute right-0 -top-4 left-0 mx-auto translate-x-16 rotate-[-3.5deg] }
-    .purpleBlur { @apply absolute -right-[640px] -top-64 }
+
+    .mainGrid { @apply grid grid-rows-2 grid-flow-col gap-8 }
+    
+    .BTC { background-color: #F7931A; }
+    .ETH { background-color: #4B6ED1; }
+    .XRP { background-color: #23292F; }
+    .AVAX { background-color: #E84142; }
+    .BTC, .ETH, .XRP, .AVAX {
+        .cryptoBorder { 
+            background: linear-gradient(20deg, rgba(242, 235, 171, 1) 10%, rgba(52, 35, 242, 1) 60%, rgba(255, 49, 98, 1) 100%);
+            @apply p-[4px] h-full w-full rounded-md
+        }
+        .cryptoContainer {
+            h1 { @apply text-left font-extrabold text-3xl }
+            .titleBg { @apply w-[120px] h-3 -mt-[12px] }
+            .cryptoPrice { @apply mt-2 }
+            @apply p-8 py-6 h-full w-full rounded-md bg-secondary
+        }
+        @apply p-[10px] h-full w-full rounded-md
+    }
+
+    .graphVector { @apply absolute right-0 -top-4 left-0 mx-auto translate-x-16 rotate-[-3.5deg] pointer-events-none }
+    .purpleBlur { @apply absolute -right-[640px] -top-64 pointer-events-none }
     @apply mt-32 py-10 relative
 }
 

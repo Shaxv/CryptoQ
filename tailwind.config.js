@@ -3,6 +3,7 @@ module.exports = {
     "./pages/*.{js,jsx,ts,tsx}",
     "./pages/**/*.{js,jsx,ts,tsx}",
     "./components/*.{js,jsx,ts,tsx}",
+    "./components/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
     colors: {
@@ -13,7 +14,7 @@ module.exports = {
       "base": "#09090B",
       "info": "#6366F1",
       "success": "#78FF9E",
-      "warning": "#F2EBAB",                  
+      "warning": "#F2EBAB",
       "error": "#FF7575",
       "gray": "#9CA3AF",
       "darkGray": "#1d1d29",

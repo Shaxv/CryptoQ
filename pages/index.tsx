@@ -64,7 +64,92 @@ export default function Home() {
         </section>
 
         <section className={styles.sectionTwo}>
-          <h1>Top Cryptocurrencies</h1>
+          <h1 className="mb-32">Top Cryptocurrencies</h1>
+
+          <div className={styles.mainGrid}>
+            
+            {/* Bitcoin */}
+            <div className="row-span-3 col-span-1">
+              <div className={styles.BTC}>
+              <div className={styles.cryptoBorder}>
+              <div className={styles.cryptoContainer}>
+                <h1>Bitcoin</h1>
+                <div className={styles.titleBg}><div/></div>
+                <div className={styles.cryptoPrice}>
+                  <div className="text-success">
+                    <i className="fas fa-angle-up mr-2 -mt-[3px]"/>
+                    USD 47,958.8 (+2.4%)
+                  </div>
+                </div>
+                <p>Bitcoin is a decentralized cryptocurrency originally described in a 2008 whitepaper by a person, or group of people, using the alias Satoshi Nakamoto. It was launched soon after, in January 2009.
+                Bitcoin is a peer-to-peer....</p>
+              </div>
+              </div>
+              </div>
+            </div>
+
+            {/* Ethereum */}
+            <div className="col-span-2">
+              <div className={styles.ETH}>
+              <div className={styles.cryptoBorder}>
+              <div className={styles.cryptoContainer}>
+                <h1>Ethereum</h1>
+                <div className={styles.titleBg}><div/></div>
+                <div className={styles.cryptoPrice}>
+                  <div className="text-error">
+                    <i className="fas fa-angle-down mr-2 -mt-[3px]"/>
+                    USD 3402.58 (-1.8%)
+                  </div>
+                </div>
+                <p> Ethereum is a decentralized open-source blockchain system that features its own cryptocurrency, Ether. ETH works as a platform for numerous other cryptocurrencies, as well as for the execution of decentralized smart contracts.... </p>
+              </div>
+              </div>
+              </div>
+            </div>
+
+            <div className='flex row-span-2 col-span-2 gap-12'>
+
+            {/* Ripple */}
+            <div className="grow">
+              <div className={styles.XRP}>
+              <div className={styles.cryptoBorder}>
+              <div className={styles.cryptoContainer}>
+                <h1>Ripple</h1>
+                <div className={styles.titleBg}><div/></div>
+                <div className={styles.cryptoPrice}>
+                  <div className="text-success">
+                    <i className="fas fa-angle-up mr-2 -mt-[3px]"/>
+                    USD 0.586 (+1.8%)
+                  </div>
+                </div>
+              </div>
+              </div>
+              </div>
+            </div>
+
+            {/* Avalanche */}
+            <div className="grow">
+              <div className={styles.AVAX}>
+              <div className={styles.cryptoBorder}>
+              <div className={styles.cryptoContainer}>
+                <h1>Avalanche</h1>
+                <div className={styles.titleBg}><div/></div>
+                <div className={styles.cryptoPrice}>
+                  <div className="text-success">
+                    <i className="fas fa-angle-up mr-2 -mt-[3px]"/>
+                    USD 136.8 (+3.4%)
+                  </div>
+                </div>
+              </div>
+              </div>
+              </div>
+            </div>
+
+            </div>
+
+
+          </div>
+
           <img src="/graph_vector.png" className={styles.graphVector}/>
           <img src="/purple_blur.png" className={styles.purpleBlur}/>
         </section>

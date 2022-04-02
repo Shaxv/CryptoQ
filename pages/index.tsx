@@ -64,7 +64,7 @@ export default function Home() {
         </section>
 
         <section className={styles.sectionTwo}>
-          <h1 className="mb-32">Top Cryptocurrencies</h1>
+          <h1 className={styles.title}>Top Cryptocurrencies</h1>
 
           <div className={styles.mainGrid}>
             
@@ -81,8 +81,11 @@ export default function Home() {
                     USD 47,958.8 (+2.4%)
                   </div>
                 </div>
-                <p>Bitcoin is a decentralized cryptocurrency originally described in a 2008 whitepaper by a person, or group of people, using the alias Satoshi Nakamoto. It was launched soon after, in January 2009.
+                <p className="ml-0 mt-3 mb-8 md:mb-0 md:ml-52 md:-mt-16 xl:mt-0 xl:ml-0">Bitcoin is a decentralized cryptocurrency originally described in a 2008 whitepaper by a person, or group of people, using the alias Satoshi Nakamoto. It was launched soon after, in January 2009.
                 Bitcoin is a peer-to-peer....</p>
+                <div className={styles.learnMore}>
+                  <div>Learn More...</div>
+                </div>
               </div>
               </div>
               </div>
@@ -101,13 +104,16 @@ export default function Home() {
                     USD 3402.58 (-1.8%)
                   </div>
                 </div>
-                <p> Ethereum is a decentralized open-source blockchain system that features its own cryptocurrency, Ether. ETH works as a platform for numerous other cryptocurrencies, as well as for the execution of decentralized smart contracts.... </p>
+                <p className="ml-0 mt-3 mb-8 md:ml-52 md:-mt-16 md:mb-0"> Ethereum is a decentralized open-source blockchain system that features its own cryptocurrency, Ether. ETH works as a platform for numerous other cryptocurrencies, as well as for the execution of decentralized smart contracts.... </p>
+                <div className={styles.learnMore}>
+                  <div>Learn More...</div>
+                </div>
               </div>
               </div>
               </div>
             </div>
 
-            <div className='flex row-span-2 col-span-2 gap-12'>
+            <div className='block xl:flex row-span-2 col-span-2 gap-12'>
 
             {/* Ripple */}
             <div className="grow">
@@ -121,6 +127,9 @@ export default function Home() {
                     <i className="fas fa-angle-up mr-2 -mt-[3px]"/>
                     USD 0.586 (+1.8%)
                   </div>
+                </div>
+                <div className={styles.learnMore}>
+                  <div>Learn More...</div>
                 </div>
               </div>
               </div>
@@ -140,6 +149,9 @@ export default function Home() {
                     USD 136.8 (+3.4%)
                   </div>
                 </div>
+                <div className={styles.learnMore}>
+                  <div>Learn More...</div>
+                </div>
               </div>
               </div>
               </div>
@@ -150,8 +162,8 @@ export default function Home() {
 
           </div>
 
+          <img src="/blur.png" className={styles.blur}/>
           <img src="/graph_vector.png" className={styles.graphVector}/>
-          <img src="/purple_blur.png" className={styles.purpleBlur}/>
         </section>
       </div>
 

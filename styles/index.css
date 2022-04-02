@@ -15,7 +15,7 @@ body { overflow: overlay; }
 h1, h2, h3, h4, h5 {
   font-family: 'Avenir LT Std', sans-serif;
 }
-.wrapper { @apply mx-auto max-w-[1250px] }
+.wrapper { @apply mx-auto max-w-[1100px] }
 .alert { @apply bg-darkGray shadow-md text-lg w-max text-primary min-w-[140px] }
 
 ::-webkit-scrollbar {

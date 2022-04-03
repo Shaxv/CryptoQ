@@ -18,6 +18,19 @@ h1, h2, h3, h4, h5 {
 .wrapper { @apply mx-auto max-w-[1100px] }
 .alert { @apply bg-darkGray shadow-md text-lg w-max text-primary min-w-[140px] }
 
+
+.btn-gradient { 
+  background: linear-gradient(20deg, rgba(242, 235, 171, 1) 10%, rgba(52, 35, 242, 1) 60%, rgba(255, 49, 98, 1) 100%) !important;
+  min-height: unset !important;
+  height: unset !important;
+  border: none !important;
+  @apply p-[2px] rounded-md
+}
+.btn-gradient-primary div {
+  @apply py-[4px] px-5 text-secondary bg-primary h-full rounded-md items-center justify-center flex
+}
+
+
 ::-webkit-scrollbar {
   width: 18px;
 }

@@ -4,7 +4,7 @@
     background-size: cover;
     height: 780px;
     
-    h1 { @apply text-2xl sm:text-3xl md:text-5xl font-bold mb-1 }
+    h1 { @apply text-[28px] sm:text-4xl md:text-5xl font-bold mb-1 }
     
     .gradetitle {      
         background: linear-gradient(90deg, rgba(52,35,242,0.9) 40%, rgba(242,235,171,1) 48%, rgba(255,49,98,1) 65%);
@@ -29,7 +29,7 @@
 .sectionOne {
     .cardContainer {
         background:linear-gradient(20deg, rgba(242, 235, 171, 1) 10%, rgba(52, 35, 242, 1) 60%, rgba(255, 49, 98, 1) 100%);
-        @apply p-[3px] relative rounded-md h-[250px] w-[240px] self-center 
+        @apply p-[3px] relative rounded-md h-[250px] w-[240px] self-center mx-auto mt-12 md:mt-0
     }
     .card {
         h1 { @apply text-xl font-bold mt-2 }
@@ -48,7 +48,7 @@
     }
     .blur { @apply absolute -top-32 right-0 pointer-events-none }
 
-    @apply mt-[-225px] flex flex-wrap max-w-full justify-center gap-x-6 relative
+    @apply mt-[-300px] md:mt-[-250px] block md:flex md:flex-wrap max-w-full justify-center gap-6 relative
 }
 
 .sectionTwo {
@@ -76,11 +76,31 @@
         }
         @apply p-[10px] h-full w-full rounded-md mt-6 2xl:mt-0
     }
+    .XRP, .AVAX { 
+        .cryptoContainer { 
+            .cryptoPrice { @apply mb-8 lg:mb-8 xl:mb-0 } 
+        }
+    }
 
     .blur { @apply absolute top-20 right-0 pointer-events-none rotate-180 }
     .graphVector { @apply absolute top-0 right-16 sm:right-0 sm:-top-4 sm:left-0 mx-auto translate-x-16 rotate-[-3.5deg] pointer-events-none }
     .purpleBlur { @apply absolute -right-[640px] -top-64 pointer-events-none }
     @apply mt-32 py-10 relative w-[85%] 2xl:w-full mx-auto
+}
+
+.sectionThree {
+    h1 { @apply text-neutral text-opacity-80 mb-4 }
+    div { @apply w-full md:w-3/5 mx-auto }
+    .imageContainer { 
+        @apply block relative w-full h-full mx-auto self-center justify-center text-center
+    }
+    @apply py-32
+}
+
+.sectionFour {
+    h1 { @apply text-secondary font-extrabold text-[28px] sm:text-4xl md:text-5xl }
+    span { @apply text-sm sm:text-base md:text-lg sm:text-gray text-gray font-semibold }
+    @apply bg-primary rounded-xl w-10/12 mx-auto py-10 px-20 text-center
 }
 
 .title { @apply text-3xl sm:text-4xl text-center font-bold }

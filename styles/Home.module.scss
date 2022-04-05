@@ -90,7 +90,7 @@
 
 .sectionThree {
     h1 { @apply text-neutral text-opacity-80 mb-4 }
-    div { @apply w-full md:w-3/5 mx-auto }
+    div { @apply w-full md:w-[60%] mx-auto }
     .imageContainer { 
         @apply block relative w-full h-full mx-auto self-center justify-center text-center
     }

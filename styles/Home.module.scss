@@ -98,7 +98,7 @@
 }
 
 .sectionFour {
-    h1 { @apply text-secondary font-extrabold text-[28px] sm:text-4xl md:text-5xl }
+    h1 { @apply text-secondary font-extrabold text-[28px] sm:text-4xl md:text-4xl }
     span { @apply text-sm sm:text-base md:text-lg sm:text-gray text-gray font-semibold }
     @apply bg-primary rounded-xl w-10/12 mx-auto py-10 px-20 text-center
 }

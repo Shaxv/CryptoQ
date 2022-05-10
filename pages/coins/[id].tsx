@@ -11,6 +11,11 @@ import styles from "../styles/Tracker.module.scss";
 import { CryptoState } from "../../lib/MainContext";
 import { SingleCoin } from "../../lib/CoinGecko";
 
+const removeHttp = (url) => {
+  if (url.startsWith("https://")) return url.slice(12);
+  return url.slice(11);
+};
+
 export default function Coin() {
   const { currency, symbol } = CryptoState();
   const router = useRouter();
@@ -61,8 +66,10 @@ export default function Coin() {
                 width={"50px"}
               />
               <h1 className="ml-4 mr-3 text-xl">
-                <span className="font-extrabold">{coin["name"]}</span> (
-                {coin["symbol"].toUpperCase()})
+                <span className="font-extrabold">{coin["name"]}</span>{" "}
+                <span className="text-gray">
+                  ({coin["symbol"].toUpperCase()})
+                </span>
               </h1>
               <i className="far fa-star" />
             </div>
@@ -82,6 +89,53 @@ export default function Coin() {
               >
                 {coin["market_data"]["price_change_percentage_24h"].toFixed(2)}%
               </span>
+            </div>
+            <div className="flex justify-between max-w-[225px]">
+              <div className="text-gray tracking-wider">Website</div>
+              <a
+                href={coin["links"]["homepage"][0]}
+                className="badge badge-md badge-black"
+              >
+                {removeHttp(coin["links"]["homepage"][0])}
+              </a>
+            </div>
+
+            <div className="flex justify-between max-w-[225px] mt-5">
+              <div className="text-gray tracking-wider">Community</div>
+
+              {coin["links"]["subreddit_url"] ? (
+                <a
+                  href={coin["links"]["subreddit_url"]}
+                  className="badge badge-md badge-black"
+                >
+                  <i className="fab fa-reddit-alien mr-1" />
+                  Reddit
+                </a>
+              ) : (
+                ""
+              )}
+
+              {coin["links"]["repos_url"]["github"][0] ? (
+                <a
+                  href={coin["links"]["repos_url"]["github"][0]}
+                  className="badge badge-md badge-black"
+                >
+                  <i className="fab fa-github mr-1" />
+                  Github
+                </a>
+              ) : (
+                ""
+              )}
+            </div>
+
+            <div className="flex justify-between max-w-[225px]">
+              <div className="text-gray tracking-wider">Explorers</div>
+              <a
+                href={coin["links"]["blockchain_site"][0]}
+                className="badge badge-md badge-black"
+              >
+                {coin["links"]["blockchain_site"][0]}
+              </a>
             </div>
             {/* name={coin["name"]}
             <Image

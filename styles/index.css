@@ -26,9 +26,12 @@ h1, h2, h3, h4, h5 {
   border: none !important;
   @apply p-[2px] rounded-md
 }
-.btn-gradient-primary div {
-  @apply py-[4px] px-5 text-secondary bg-primary h-full rounded-md items-center justify-center flex
-}
+.btn-gradient-primary div { @apply py-[4px] px-5 text-secondary bg-primary h-full rounded-md items-center justify-center flex }
+.badge-sm { @apply p-2 }
+.badge-md { @apply p-3 }
+.badge-lg { @apply p-4 }
+.badge-black { background-color: rgba(25, 25, 25, 0.55); @apply border-none text-neutral }
+.badge { @apply rounded-md }
 
 ::-webkit-scrollbar {
   width: 18px;

@@ -9,12 +9,58 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import styles from "../styles/Tracker.module.scss";
 import { CryptoState } from "../../lib/MainContext";
-import { SingleCoin } from "../../lib/CoinGecko";
+import { SingleCoin, HistoricalChart } from "../../lib/CoinGecko";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const removeHttp = (url) => {
-  if (url.startsWith("https://")) return url.slice(12);
-  return url.slice(11);
+  if (url.startsWith("https://"))
+    return removeWWW(url.slice("https://".length));
+  if (url.startsWith("http://")) return removeWWW(url.slice("http://".length));
+  return removeWWW(url);
 };
+const removeWWW = (url) => {
+  if (url.startsWith("www.")) return url.slice("www. ".length);
+  return url;
+};
+
+const chartDays = [
+  {
+    label: "24 Hours",
+    value: 1,
+  },
+  {
+    label: "30 Days",
+    value: 30,
+  },
+  {
+    label: "3 Months",
+    value: 90,
+  },
+  {
+    label: "1 Year",
+    value: 365,
+  },
+];
 
 export default function Coin() {
   const { currency, symbol } = CryptoState();
@@ -24,17 +70,28 @@ export default function Coin() {
   const [coin, setCoin] = useState();
   const [loading, setLoading] = useState(false);
 
+  const [historicData, setHistoricData] = useState();
+  const [days, setDays] = useState(30);
+  const [flag, setFlag] = useState(false);
+
   const fetchCoin = async () => {
     setLoading(true);
     const { data } = await axios.get(SingleCoin(id));
-    console.log(data);
     setCoin(data);
     setLoading(false);
+  };
+  const fetchHistoricData = async () => {
+    const { data } = await axios.get(HistoricalChart(id, days, currency));
+    setFlag(true);
+    setHistoricData(data.prices);
   };
 
   useEffect(() => {
     fetchCoin();
   }, [id]);
+  useEffect(() => {
+    fetchHistoricData();
+  }, [days]);
 
   if (!coin)
     return (
@@ -134,32 +191,65 @@ export default function Coin() {
                 href={coin["links"]["blockchain_site"][0]}
                 className="badge badge-md badge-black"
               >
-                {coin["links"]["blockchain_site"][0]}
+                {removeHttp(coin["links"]["blockchain_site"][0])}
               </a>
             </div>
-            {/* name={coin["name"]}
-            <Image
-              src={coin["image"]["large"]}
-              height={100}
-              width={100}
-              objectFit="contain"
-            />
-            <h1>symbol={coin["symbol"]}</h1>
-            <h1>
-              marketcap=
-              {coin["market_data"]["market_cap"][currency.toLowerCase()]}
-            </h1>
-            <h1>
-              price=
-              {coin["market_data"]["current_price"][currency.toLowerCase()]}
-            </h1>
-            <h1>
-              priceChange={coin["market_data"]["price_change_percentage_24h"]}
-            </h1>
-            <h1>
-              volume=
-              {coin["market_data"]["total_volume"][currency.toLowerCase()]}
-            </h1> */}
+
+            {!historicData || flag === false ? (
+              <progress className="progress w-full m-10 max-w-lg mx-auto" />
+            ) : (
+              <>
+                <Line
+                  data={{
+                    labels: historicData.map((coin) => {
+                      let date = new Date(coin[0]);
+                      let time =
+                        date.getHours() > 12
+                          ? `${date.getHours() - 12}:${date.getMinutes()} PM`
+                          : `${date.getHours()}:${date.getMinutes()} AM`;
+                      return days === 1 ? time : date.toLocaleDateString();
+                    }),
+
+                    datasets: [
+                      {
+                        data: historicData.map((coin) => coin[1]),
+                        label: `Price ( Past ${days} Days ) in ${currency}`,
+                        borderColor: "#EEBC1D",
+                      },
+                    ],
+                  }}
+                  options={{
+                    elements: {
+                      point: {
+                        radius: 1,
+                      },
+                    },
+                  }}
+                />
+                <div
+                  style={{
+                    display: "flex",
+                    marginTop: 20,
+                    justifyContent: "space-around",
+                    width: "100%",
+                  }}
+                >
+                  {chartDays.map((day) => (
+                    <button
+                      className="btn btn-primary"
+                      key={day.value}
+                      onClick={() => {
+                        setDays(day.value);
+                        setFlag(false);
+                      }}
+                      selected={day.value === days}
+                    >
+                      {day.label}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
           </>
         )}
       </main>

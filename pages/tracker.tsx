@@ -68,12 +68,17 @@ export default function SignUp() {
             .map((coin) => {
               const profit = coin.price_change_percentage_24h > 0;
               return (
-                <div
-                  onClick={() => router.push(`/coins/${coin.id}`)}
-                  className="cursor-pointer"
+                <Link
+                  href={{
+                    pathname: `/coins/${coin.id}`,
+                    query: { id: `${coin.id}` },
+                  }}
+                  as={`/coins/${coin.id}`}
                 >
-                  <h1 className="m-4 bg-primary">{coin.name}</h1>
-                </div>
+                  <a className="cursor-pointer">
+                    <h1 className="m-4 bg-primary">{coin.name}</h1>
+                  </a>
+                </Link>
               );
             })
         )}

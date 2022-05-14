@@ -39,7 +39,7 @@ const removeHttp = (url) => {
   return removeWWW(url);
 };
 const removeWWW = (url) => {
-  if (url.startsWith("www.")) return url.slice("www. ".length);
+  if (url.startsWith("www.")) return url.slice("www.".length);
   return url;
 };
 
@@ -219,6 +219,20 @@ export default function Coin() {
                     ],
                   }}
                   options={{
+                    responsive: true,
+                    plugins: {
+                      tooltip: {
+                        displayColors: false,
+                        titleFont: { size: 16 },
+                        bodyFont: { size: 14 },
+                        padding: { bottom: 10, top: 10, right: 10, left: 10 },
+                        callbacks: {
+                          label: (tooltipItem, data) => {
+                            return `${symbol} ${tooltipItem.value}`;
+                          },
+                        },
+                      },
+                    },
                     elements: {
                       point: {
                         radius: 1,
@@ -234,19 +248,30 @@ export default function Coin() {
                     width: "100%",
                   }}
                 >
-                  {chartDays.map((day) => (
-                    <button
-                      className="btn btn-primary"
-                      key={day.value}
-                      onClick={() => {
-                        setDays(day.value);
-                        setFlag(false);
-                      }}
-                      selected={day.value === days}
-                    >
-                      {day.label}
-                    </button>
-                  ))}
+                  <button
+                    onClick={() => setDays(30)}
+                    className="btn btn-primary"
+                  >
+                    30 DAYS
+                  </button>
+                  <button
+                    onClick={() => setDays(90)}
+                    className="btn btn-primary"
+                  >
+                    90 DAYS
+                  </button>
+                  <button
+                    onClick={() => setDays(150)}
+                    className="btn btn-primary"
+                  >
+                    150 DAYS
+                  </button>
+                  <button
+                    onClick={() => setDays(365)}
+                    className="btn btn-primary"
+                  >
+                    365 DAYS
+                  </button>
                 </div>
               </>
             )}
@@ -255,4 +280,10 @@ export default function Coin() {
       </main>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  return {
+    props: {},
+  };
 }

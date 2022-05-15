@@ -13,17 +13,16 @@ const Navbar = () => {
             <label tabIndex={0} className="btn btn-ghost lg:hidden">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
+                className="inline-block w-5 h-5 stroke-current"
               >
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                ></path>
               </svg>
             </label>
             <ul
@@ -31,13 +30,13 @@ const Navbar = () => {
               className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
-                <a>Features</a>
+                <a>Live Tracker</a>
               </li>
               <li>
-                <a>Company</a>
+                <a>Paper Trading</a>
               </li>
               <li>
-                <a>Contact</a>
+                <a>DeFi Wallet</a>
               </li>
             </ul>
           </div>
@@ -55,35 +54,13 @@ const Navbar = () => {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal p-0">
             <li>
-              <div className="dropdown dropdown-end dropdown-hover realtive">
-                <label tabIndex={0}>Products</label>
-                <ul
-                  tabIndex={0}
-                  className="menu dropdown-content p-2 shadow absolute -bottom-[162px] bg-primary text-secondary rounded-box w-max"
-                >
-                  <li>
-                    <Link href="/tracker">
-                      <a>Tracker</a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/">
-                      <a>Paper Trading</a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/wallet">
-                      <a>DeFi Wallet</a>
-                    </Link>
-                  </li>
-                </ul>
-              </div>
+              <Link href="/tracker">Live Tracker</Link>
             </li>
             <li>
-              <a>Company</a>
+              <a>Paper Trading</a>
             </li>
             <li>
-              <a>Contact</a>
+              <a>DeFi Wallet</a>
             </li>
           </ul>
         </div>

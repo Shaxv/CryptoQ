@@ -214,7 +214,7 @@ export default function Coin() {
                       {
                         data: historicData.map((coin) => coin[1]),
                         label: `Price ( Past ${days} Days ) in ${currency}`,
-                        borderColor: "#EEBC1D",
+                        borderColor: "#6366F1",
                       },
                     ],
                   }}
@@ -228,14 +228,32 @@ export default function Coin() {
                         padding: { bottom: 10, top: 10, right: 10, left: 10 },
                         callbacks: {
                           label: (tooltipItem, data) => {
-                            return `${symbol} ${tooltipItem.value}`;
+                            return `${symbol} ${tooltipItem.formattedValue}`;
                           },
+                        },
+                      },
+                      legend: false,
+                    },
+                    scales: {
+                      x: {
+                        ticks: {
+                          callback: function (val, index) {
+                            return index % 4 === 0
+                              ? this.getLabelForValue(val)
+                              : "";
+                          },
+                          align: "center",
+                          minRotation: 0,
+                          maxRotation: 30,
                         },
                       },
                     },
                     elements: {
                       point: {
                         radius: 1,
+                      },
+                      line: {
+                        tension: 0.2,
                       },
                     },
                   }}
@@ -249,28 +267,40 @@ export default function Coin() {
                   }}
                 >
                   <button
+                    onClick={() => setDays(1)}
+                    className="btn btn-primary"
+                  >
+                    1D
+                  </button>
+                  <button
+                    onClick={() => setDays(7)}
+                    className="btn btn-primary"
+                  >
+                    7D
+                  </button>
+                  <button
                     onClick={() => setDays(30)}
                     className="btn btn-primary"
                   >
-                    30 DAYS
+                    30D
                   </button>
                   <button
                     onClick={() => setDays(90)}
                     className="btn btn-primary"
                   >
-                    90 DAYS
-                  </button>
-                  <button
-                    onClick={() => setDays(150)}
-                    className="btn btn-primary"
-                  >
-                    150 DAYS
+                    3M
                   </button>
                   <button
                     onClick={() => setDays(365)}
                     className="btn btn-primary"
                   >
-                    365 DAYS
+                    1Y
+                  </button>
+                  <button
+                    onClick={() => setDays(1825)}
+                    className="btn btn-primary"
+                  >
+                    5Y
                   </button>
                 </div>
               </>

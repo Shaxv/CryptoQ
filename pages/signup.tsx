@@ -55,8 +55,8 @@ export default function SignUp() {
         <link rel="icon" href="/small_logo.png" />
       </Head>
 
-      <main>
-        <div className="flex flex-col justify-center p-24">
+      <main className="w-screen h-screen">
+        <div className="flex flex-col justify-center w-full h-full p-24">
           <div className="form-control mx-auto mt-3 w-full max-w-xs">
             <label className="label">
               <span className="label-text font-black">Email:</span>

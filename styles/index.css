@@ -33,6 +33,10 @@ h1, h2, h3, h4, h5 {
 .badge-black { background-color: rgba(25, 25, 25, 0.55); @apply border-none text-neutral }
 .badge { @apply rounded-md }
 
+#navBar {
+  @apply sticky top-0
+}
+
 ::-webkit-scrollbar {
   width: 18px;
 }

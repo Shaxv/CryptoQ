@@ -228,7 +228,7 @@ export default function Coin() {
                         padding: { bottom: 10, top: 10, right: 10, left: 10 },
                         callbacks: {
                           label: (tooltipItem, data) => {
-                            return `${symbol} ${tooltipItem.formattedValue}`;
+                            return `${symbol}${tooltipItem.formattedValue}`;
                           },
                         },
                       },

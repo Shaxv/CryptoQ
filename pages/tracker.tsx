@@ -23,7 +23,7 @@ export default function SignUp() {
   const fetchCoins = async () => {
     setLoading(true);
     const { data } = await axios.get(CoinList(currency));
-
+    console.log(data);
     setCoins(data);
     setLoading(false);
   };
@@ -47,99 +47,121 @@ export default function SignUp() {
       </Head>
 
       <main className="pt-24 flex flex-col items-center text-center">
-        <h1>CryptoQ Tracker</h1>
+        <div className="max-w-xl">
+          <h1 className="text-4xl tracking-wider mb-3">Best Crypto Tracker</h1>
+          <span>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            ever since the 1500s.
+          </span>
+        </div>
+
         <input
           type="text"
           placeholder="Search"
+          className="input input-primary mt-10 mb-5"
           onChange={(e) => {
             setSearch(e.target.value);
             setPage(1);
           }}
         />
 
-        {loading ? (
-          <>
-            <progress className="progress w-full m-3 max-w-lg"></progress>
-            <progress className="progress w-full m-3 max-w-lg"></progress>
-          </>
-        ) : (
-          filteredCoins
-            .slice((page - 1) * 10, (page - 1) * 10 + 10)
-            .map((coin) => {
-              const profit = coin.price_change_percentage_24h > 0;
-              return (
-                <Link
-                  href={{
-                    pathname: `/coins/${coin.id}`,
-                    query: { id: `${coin.id}` },
-                  }}
-                  as={`/coins/${coin.id}`}
-                >
-                  <a className="cursor-pointer">
-                    <h1 className="m-4 bg-primary">{coin.name}</h1>
-                  </a>
-                </Link>
-              );
-            })
-        )}
+        <div className="wrapper">
+          <div className="flex mt-3">
+            <div className={`${styles.id} flex-grow`}>#</div>
+            <div className={`${styles.name} flex-grow`}>Name</div>
+            <div className={`${styles.price} flex-grow`}>Price</div>
+            <div className={`${styles.day} flex-grow`}>24h %</div>
+            <div className={`${styles.marketCap} flex-grow`}>Market Cap</div>
+          </div>
 
-        <div className="flex btn-group">
-          <button
-            className="btn btn-primary"
-            disabled={page == 1 ? true : false}
-            onClick={() => setPage(page - 1)}
-          >
-            <i className="fas fa-angle-left" />
-          </button>
-          <button className="btn btn-primary no-animation">{page}</button>
-          <button
-            className="btn btn-primary"
-            disabled={page * 10 - filteredCoins.length >= 0 ? true : false}
-            onClick={() => setPage(page + 1)}
-          >
-            <i className="fas fa-angle-right" />
-          </button>
+          <div className="overflow-x-auto">
+            {loading ? (
+              <>
+                <progress className="progress w-full m-3 max-w-lg"></progress>
+                <progress className="progress w-full m-3 max-w-lg"></progress>
+              </>
+            ) : (
+              filteredCoins
+                .slice((page - 1) * 10, (page - 1) * 10 + 10)
+                .map((coin) => {
+                  const profit = coin.price_change_percentage_24h > 0;
+                  return (
+                    <Link
+                      href={{
+                        pathname: `/coins/${coin.id}`,
+                        query: { id: `${coin.id}` },
+                      }}
+                      as={`/coins/${coin.id}`}
+                    >
+                      <div className={styles.coinContainer}>
+                        <div className={`${styles.id} flex-grow`}>
+                          {coin.market_cap_rank}
+                        </div>
+                        <div className={`${styles.name}`}>
+                          <Image
+                            src={coin.image}
+                            height={30}
+                            width={30}
+                            objectFit="fill"
+                          />
+                          {coin.name}
+                        </div>
+                        <div className={`${styles.price} flex-grow`}>
+                          {symbol}
+                          {coin.current_price.toLocaleString()}
+                        </div>
+                        <div className={`${styles.day} flex-grow`}>
+                          {coin.price_change_percentage_24h >= 0 ? (
+                            <div className="bg-success bg-opacity-20 w-max p-1 rounded-md">
+                              <i className="fas fa-angle-up text-success" />{" "}
+                              <span className="text-success">
+                                {coin.price_change_percentage_24h.toFixed(2)}
+                              </span>
+                            </div>
+                          ) : (
+                            <div className="bg-error bg-opacity-20 w-max p-1 rounded-md">
+                              <i className="fas fa-angle-down text-error" />{" "}
+                              <span className="text-error">
+                                {coin.price_change_percentage_24h
+                                  .toFixed(2)
+                                  .slice(1)}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        <div className={`${styles.marketCap} flex-grow`}>
+                          {symbol}
+                          {coin.market_cap.toLocaleString()}
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })
+            )}
+          </div>
+          <div className="flex btn-group">
+            <button
+              className="btn btn-primary"
+              disabled={page == 1 ? true : false}
+              onClick={() => setPage(page - 1)}
+            >
+              <i className="fas fa-angle-left" />
+            </button>
+            <button className="btn btn-primary no-animation">{page}</button>
+            <button
+              className="btn btn-primary"
+              disabled={page * 10 - filteredCoins.length >= 0 ? true : false}
+              onClick={() => setPage(page + 1)}
+            >
+              <i className="fas fa-angle-right" />
+            </button>
+          </div>
         </div>
       </main>
     </div>
   );
 }
-
-const Coin = ({
-  name,
-  image,
-  symbol,
-  current_price,
-  total_volume,
-  price_change_percentage_24h,
-  market_cap,
-}) => {
-  return (
-    <div className={styles.coin}>
-      <div className="flex">
-        <div className="coin__coin">
-          <img src={image} alt="coin" />
-          <h1>{name}</h1>
-          <p className="coin__symbol">{symbol}</p>
-        </div>
-        <div className="coin__data">
-          <p className="coin__price">${current_price}</p>
-          <p className="coin__volume">${total_volume.toLocaleString()}</p>
-          <p
-            className={`${
-              price_change_percentage_24h < 0 ? "text-error" : "text-success"
-            }`}
-          >
-            {price_change_percentage_24h.toFixed(2)}%
-          </p>
-          <p className="coin__marketcap">
-            Mkt Cap: ${market_cap.toLocaleString()}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 // export default function CoinsTable() {
 

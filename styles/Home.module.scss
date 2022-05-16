@@ -69,7 +69,7 @@
             .cryptoPrice { @apply mt-2 }
             .learnMore { 
                 background: linear-gradient(20deg, rgba(242, 235, 171, 1) 10%, rgba(52, 35, 242, 1) 60%, rgba(255, 49, 98, 1) 100%);
-                div { @apply p-2 bg-secondary rounded-t-md }
+                div { @apply p-2 bg-secondary rounded-t-md hover:underline transition-all underline-offset-1 }
                 @apply absolute p-[4px] -bottom-1 left-7 rounded-t-md cursor-pointer
             }
             @apply p-8 py-6 h-full w-full rounded-md bg-secondary relative

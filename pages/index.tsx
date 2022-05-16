@@ -54,10 +54,10 @@ export default function Home() {
                   <div />
                 </div>
                 <p>
-                  Protection against DDoS attacks, full data encryption,
-                  cryptocurrency cold storage, compliance. Alongside with two
-                  factor authentication, automatic backups and so much more for
-                  your own protection.
+                  Protection against DDoS attacks, full data encryption, cold
+                  storage solutions, compliance. Alongside with two factor
+                  authentication, automatic backups and so much more for your
+                  own protection.
                 </p>
               </div>
             </div>
@@ -71,7 +71,7 @@ export default function Home() {
                 <div />
               </div>
               <p>
-                You will not miss any action eferred to your account. We will
+                You will not miss any action referred to your account. We will
                 notify you on the selected platforms at real-time.
               </p>
             </div>
@@ -243,7 +243,7 @@ export default function Home() {
 
         <section className={styles.sectionFour}>
           <h1 className={styles.title}>No fees. No limits. No holdback.</h1>
-          <span>Sign Up Now and Do as you Pleases.</span>
+          <span>Sign up now to get the most of our services.</span>
           <div className="flex justify-center mt-12">
             <button className="btn btn-outline btn-gradient btn-gradient-primary mr-2">
               <div>Get Started</div>

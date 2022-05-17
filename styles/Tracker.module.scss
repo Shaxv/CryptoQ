@@ -1,7 +1,7 @@
-.coinContainer { @apply flex bg-info my-2 cursor-pointer }
+.coinContainer { @apply flex p-5 px-6 cursor-pointer hover:bg-primary hover:bg-opacity-5 }
 
-.id { width: 100px; @apply text-left }
-.name { width: 400px; @apply text-left }
-.price { width: 300px; @apply text-left }
-.day { width: 200px; @apply text-left }
-.marketCap { width: 400px; @apply text-left hidden lg:block }
+.id { width: 100px; @apply flex-grow relative flex items-center }
+.name { width: 450px; @apply flex-grow flex items-center }
+.price { width: 300px; @apply flex-grow flex items-center }
+.day { width: 200px; @apply flex-grow flex items-center }
+.marketCap { width: 350px; @apply flex-grow hidden lg:flex items-center }

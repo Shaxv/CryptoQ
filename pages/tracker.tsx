@@ -46,7 +46,7 @@ export default function SignUp() {
         <link rel="icon" href="/small_logo.png" />
       </Head>
 
-      <main className="pt-24 flex flex-col items-center text-center">
+      <main className="h-screen w-screen flex flex-col justify-center items-center text-center">
         <div className="max-w-xl">
           <h1 className="text-4xl tracking-wider mb-3">Best Crypto Tracker</h1>
           <span>
@@ -66,16 +66,16 @@ export default function SignUp() {
           }}
         />
 
-        <div className="wrapper">
-          <div className="flex mt-3">
-            <div className={`${styles.id} flex-grow`}>#</div>
-            <div className={`${styles.name} flex-grow`}>Name</div>
-            <div className={`${styles.price} flex-grow`}>Price</div>
-            <div className={`${styles.day} flex-grow`}>24h %</div>
-            <div className={`${styles.marketCap} flex-grow`}>Market Cap</div>
+        <div className="max-w-4xl">
+          <div className="flex my-2 px-6">
+            <div className={`${styles.id} pl-6`}>#</div>
+            <div className={`${styles.name}`}>Name</div>
+            <div className={`${styles.price}`}>Price</div>
+            <div className={`${styles.day}`}>24h %</div>
+            <div className={`${styles.marketCap}`}>Market Cap</div>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="w-full overflow-x-auto border border-neutral border-opacity-25 rounded-lg">
             {loading ? (
               <>
                 <progress className="progress w-full m-3 max-w-lg"></progress>
@@ -95,7 +95,18 @@ export default function SignUp() {
                       as={`/coins/${coin.id}`}
                     >
                       <div className={styles.coinContainer}>
-                        <div className={`${styles.id} flex-grow`}>
+                        <div className={`${styles.id}`}>
+                          <i
+                            className="far fa-star text-warning mr-1"
+                            onMouseEnter={(e) => {
+                              e.target.classList.remove("far");
+                              e.target.classList.add("fas");
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.classList.remove("fas");
+                              e.target.classList.add("far");
+                            }}
+                          />
                           {coin.market_cap_rank}
                         </div>
                         <div className={`${styles.name}`}>
@@ -105,13 +116,16 @@ export default function SignUp() {
                             width={30}
                             objectFit="fill"
                           />
-                          {coin.name}
+                          <span className="ml-2">{coin.name}</span>
+                          <span className="ml-1 hidden md:block text-gray tracking-wide text-2xs">
+                            • ({coin.symbol.toUpperCase()})
+                          </span>
                         </div>
-                        <div className={`${styles.price} flex-grow`}>
+                        <div className={`${styles.price}`}>
                           {symbol}
                           {coin.current_price.toLocaleString()}
                         </div>
-                        <div className={`${styles.day} flex-grow`}>
+                        <div className={`${styles.day}`}>
                           {coin.price_change_percentage_24h >= 0 ? (
                             <div className="bg-success bg-opacity-20 w-max p-1 rounded-md">
                               <i className="fas fa-angle-up text-success" />{" "}
@@ -130,7 +144,7 @@ export default function SignUp() {
                             </div>
                           )}
                         </div>
-                        <div className={`${styles.marketCap} flex-grow`}>
+                        <div className={`${styles.marketCap}`}>
                           {symbol}
                           {coin.market_cap.toLocaleString()}
                         </div>
@@ -140,7 +154,7 @@ export default function SignUp() {
                 })
             )}
           </div>
-          <div className="flex btn-group">
+          <div className="flex btn-group justify-center mt-6">
             <button
               className="btn btn-primary"
               disabled={page == 1 ? true : false}

@@ -15,15 +15,18 @@ export default function SignUp() {
   const { currency, symbol } = CryptoState();
   const router = useRouter();
 
+  const { isLoading, user } = useUser();
+  const [favorites, setFavorites] = useState([]);
+
   const [coins, setCoins] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
 
   const fetchCoins = async () => {
     setLoading(true);
     const { data } = await axios.get(CoinList(currency));
-    console.log(data);
     setCoins(data);
     setLoading(false);
   };
@@ -31,6 +34,22 @@ export default function SignUp() {
   useEffect(() => {
     fetchCoins();
   }, [currency]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      const response = supabaseClient
+        .from<any>("favorites")
+        .select("favorites")
+        .match({ id: user.id });
+      response.then((res) => {
+        setFavorites(res.data.map((item) => item.favorites));
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(favorites);
+  }, [favorites]);
 
   const filteredCoins = coins.filter(
     (coin) =>
@@ -74,18 +93,24 @@ export default function SignUp() {
             <div className={`${styles.day}`}>24h %</div>
             <div className={`${styles.marketCap}`}>Market Cap</div>
           </div>
-
           <div className="w-full overflow-x-auto border border-neutral border-opacity-25 rounded-lg">
             {loading ? (
               <>
-                <progress className="progress w-full m-3 max-w-lg"></progress>
-                <progress className="progress w-full m-3 max-w-lg"></progress>
+                <progress className="progress w-full m-4 mx-6 max-w-xl"></progress>
+                <progress className="progress w-full m-4 mx-6 max-w-xl"></progress>
+                <progress className="progress w-full m-4 mx-6 max-w-xl"></progress>
               </>
             ) : (
               filteredCoins
-                .slice((page - 1) * 10, (page - 1) * 10 + 10)
+                .slice((page - 1) * perPage, (page - 1) * perPage + perPage)
                 .map((coin) => {
                   const profit = coin.price_change_percentage_24h > 0;
+                  let isFavorite = false;
+                  favorites.forEach((item) => {
+                    item == coin.id
+                      ? (isFavorite = true)
+                      : (isFavorite = false);
+                  });
                   return (
                     <Link
                       href={{
@@ -97,7 +122,20 @@ export default function SignUp() {
                       <div className={styles.coinContainer}>
                         <div className={`${styles.id}`}>
                           <i
-                            className="far fa-star text-warning mr-1"
+                            className={`${
+                              isFavorite ? "fas" : "far"
+                            } fa-star text-warning mr-2`}
+                            onMouseEnter={(e) => {
+                              e.target.classList.remove("far");
+                              e.target.classList.add("fas");
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.classList.remove("fas");
+                              e.target.classList.add("far");
+                            }}
+                          />
+                          <i
+                            className="far fa-star text-warning mr-2"
                             onMouseEnter={(e) => {
                               e.target.classList.remove("far");
                               e.target.classList.add("fas");
@@ -154,6 +192,12 @@ export default function SignUp() {
                 })
             )}
           </div>
+          <button className="btn btn-primary" onClick={() => setPerPage(10)}>
+            10
+          </button>{" "}
+          <button className="btn btn-primary" onClick={() => setPerPage(20)}>
+            20
+          </button>
           <div className="flex btn-group justify-center mt-6">
             <button
               className="btn btn-primary"
@@ -165,7 +209,9 @@ export default function SignUp() {
             <button className="btn btn-primary no-animation">{page}</button>
             <button
               className="btn btn-primary"
-              disabled={page * 10 - filteredCoins.length >= 0 ? true : false}
+              disabled={
+                page * perPage - filteredCoins.length >= 0 ? true : false
+              }
               onClick={() => setPage(page + 1)}
             >
               <i className="fas fa-angle-right" />

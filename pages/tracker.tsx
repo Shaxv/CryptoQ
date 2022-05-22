@@ -6,7 +6,7 @@ import Router, { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import { useUser } from "@supabase/supabase-auth-helpers/react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { isValidElement, useEffect, useState } from "react";
 import styles from "../styles/Tracker.module.scss";
 import { CoinList } from "../lib/CoinGecko";
 import { CryptoState } from "../lib/MainContext";
@@ -36,26 +36,26 @@ export default function SignUp() {
   }, [currency]);
 
   useEffect(() => {
-    if (!isLoading) {
+    if (user && !isLoading) {
       const response = supabaseClient
         .from<any>("favorites")
         .select("favorites")
         .match({ id: user.id });
       response.then((res) => {
-        setFavorites(res.data.map((item) => item.favorites));
+        setFavorites(res.data.at(0)["favorites"]);
       });
     }
-  }, []);
-
-  useEffect(() => {
-    console.log(favorites);
-  }, [favorites]);
+  }, [user, isLoading]);
 
   const filteredCoins = coins.filter(
     (coin) =>
       coin.name.toLowerCase().includes(search.toLowerCase()) ||
       coin.symbol.toLowerCase().includes(search.toLowerCase())
   );
+
+  useEffect(() => {
+    console.log(favorites);
+  }, [favorites]);
 
   return (
     <div>
@@ -95,22 +95,25 @@ export default function SignUp() {
           </div>
           <div className="w-full overflow-x-auto border border-neutral border-opacity-25 rounded-lg">
             {loading ? (
-              <>
-                <progress className="progress w-full m-4 mx-6 max-w-xl"></progress>
-                <progress className="progress w-full m-4 mx-6 max-w-xl"></progress>
-                <progress className="progress w-full m-4 mx-6 max-w-xl"></progress>
-              </>
+              isLoading ? (
+                <>
+                  <progress className="progress w-full m-4 mx-6 max-w-xl"></progress>
+                  <progress className="progress w-full m-4 mx-6 max-w-xl"></progress>
+                  <progress className="progress w-full m-4 mx-6 max-w-xl"></progress>
+                </>
+              ) : (
+                <>
+                  <progress className="progress w-full m-4 mx-6 max-w-xl"></progress>
+                  <progress className="progress w-full m-4 mx-6 max-w-xl"></progress>
+                  <progress className="progress w-full m-4 mx-6 max-w-xl"></progress>
+                </>
+              )
             ) : (
               filteredCoins
                 .slice((page - 1) * perPage, (page - 1) * perPage + perPage)
                 .map((coin) => {
                   const profit = coin.price_change_percentage_24h > 0;
-                  let isFavorite = false;
-                  favorites.forEach((item) => {
-                    item == coin.id
-                      ? (isFavorite = true)
-                      : (isFavorite = false);
-                  });
+                  const isFavorite = favorites.includes(coin.id);
                   return (
                     <Link
                       href={{
@@ -118,6 +121,7 @@ export default function SignUp() {
                         query: { id: `${coin.id}` },
                       }}
                       as={`/coins/${coin.id}`}
+                      key={coin.id}
                     >
                       <div className={styles.coinContainer}>
                         <div className={`${styles.id}`}>
@@ -126,25 +130,32 @@ export default function SignUp() {
                               isFavorite ? "fas" : "far"
                             } fa-star text-warning mr-2`}
                             onMouseEnter={(e) => {
-                              e.target.classList.remove("far");
-                              e.target.classList.add("fas");
+                              if (!isFavorite) {
+                                e.target.classList.remove("far");
+                                e.target.classList.add("fas");
+                              } else {
+                                e.target.classList.add("far");
+                                e.target.classList.remove("fas");
+                              }
                             }}
                             onMouseLeave={(e) => {
-                              e.target.classList.remove("fas");
-                              e.target.classList.add("far");
+                              if (!isFavorite) {
+                                e.target.classList.remove("fas");
+                                e.target.classList.add("far");
+                              } else {
+                                e.target.classList.add("fas");
+                                e.target.classList.remove("far");
+                              }
                             }}
+                            // onClick={() => {
+                            //   if (isFavorite) {
+                            //     const { data, error } = await supabaseClient
+                            //       .from<any>("favorites")
+                            //       .update({ favorites: {...favorites, } })
+                            //   }
+                            // }}
                           />
-                          <i
-                            className="far fa-star text-warning mr-2"
-                            onMouseEnter={(e) => {
-                              e.target.classList.remove("far");
-                              e.target.classList.add("fas");
-                            }}
-                            onMouseLeave={(e) => {
-                              e.target.classList.remove("fas");
-                              e.target.classList.add("far");
-                            }}
-                          />
+
                           {coin.market_cap_rank}
                         </div>
                         <div className={`${styles.name}`}>

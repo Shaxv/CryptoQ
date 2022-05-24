@@ -26,16 +26,24 @@ export default function SignUp() {
     } else {
       if (!username) setError("Username required!");
       else {
-        const { user, error } = await supabaseClient.auth.signUp({
-          email: email,
-          password: password,
-        });
+        const { user, error } = await supabaseClient.auth.signUp(
+          {
+            email: email,
+            password: password,
+          },
+          {
+            data: {
+              username: username,
+              balance: 1000000,
+            },
+          }
+        );
         if (error) {
           setError(error.message);
         } else {
           const { data, error } = await supabaseClient
-            .from("profiles")
-            .insert([{ id: user.id, username: username }]);
+            .from("favorites")
+            .insert([{ id: user.id, created_at: new Date() }]);
           if (error) {
             setError(error.message);
           } else {

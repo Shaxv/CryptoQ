@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }) {
           toastOptions={{
             className: "alert",
             duration: 3000,
-            position: "bottom-center",
+            position: "top-center",
             // error: { iconTheme: { primary: "#FF7575" }, },
             // success: { iconTheme: { primary: "#78FF9E" } }
           }}

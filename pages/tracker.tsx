@@ -54,6 +54,16 @@ export default function SignUp() {
   );
 
   useEffect(() => {
+    if (user && !isLoading) {
+      const response = supabaseClient
+        .from<any>("favorites")
+        .update({ favorites: favorites })
+        .match({ id: user.id });
+      /* */
+      /* NOT UPDATING DB */
+      /* */
+      console.log(response);
+    }
     console.log(favorites);
   }, [favorites]);
 
@@ -113,14 +123,16 @@ export default function SignUp() {
                 .slice((page - 1) * perPage, (page - 1) * perPage + perPage)
                 .map((coin) => {
                   const profit = coin.price_change_percentage_24h > 0;
-                  const isFavorite = favorites.includes(coin.id);
+                  const isFavorite = favorites
+                    ? favorites.includes(coin.id)
+                    : false;
                   return (
-                    <Link
-                      href={{
-                        pathname: `/coins/${coin.id}`,
-                        query: { id: `${coin.id}` },
-                      }}
-                      as={`/coins/${coin.id}`}
+                    <div
+                      // href={{
+                      //   pathname: `/coins/${coin.id}`,
+                      //   query: { id: `${coin.id}` },
+                      // }}
+                      // as={`/coins/${coin.id}`}
                       key={coin.id}
                     >
                       <div className={styles.coinContainer}>
@@ -147,13 +159,23 @@ export default function SignUp() {
                                 e.target.classList.remove("far");
                               }
                             }}
-                            // onClick={() => {
-                            //   if (isFavorite) {
-                            //     const { data, error } = await supabaseClient
-                            //       .from<any>("favorites")
-                            //       .update({ favorites: {...favorites, } })
-                            //   }
-                            // }}
+                            onClick={() => {
+                              if (!user) {
+                                toast.error("You need to sign in!");
+                              } else {
+                                if (!isFavorite) {
+                                  setFavorites((prevState) =>
+                                    prevState
+                                      ? [...prevState, coin.id]
+                                      : [coin.id]
+                                  );
+                                } else {
+                                  setFavorites((prevState) =>
+                                    prevState.filter((item) => item !== coin.id)
+                                  );
+                                }
+                              }
+                            }}
                           />
 
                           {coin.market_cap_rank}
@@ -198,7 +220,7 @@ export default function SignUp() {
                           {coin.market_cap.toLocaleString()}
                         </div>
                       </div>
-                    </Link>
+                    </div>
                   );
                 })
             )}

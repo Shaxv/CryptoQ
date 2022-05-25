@@ -54,7 +54,7 @@ const Navbar = () => {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal p-0">
             <li>
-              <Link href="/tracker">Live Tracker</Link>
+              <Link href="/tracker/coins">Live Tracker</Link>
             </li>
             <li>
               <a>Paper Trading</a>

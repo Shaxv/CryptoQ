@@ -6,10 +6,10 @@ import Router, { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import { useUser } from "@supabase/supabase-auth-helpers/react";
 import axios from "axios";
-import { isValidElement, useEffect, useState } from "react";
-import styles from "../styles/Tracker.module.scss";
-import { CoinList } from "../lib/CoinGecko";
-import { CryptoState } from "../lib/MainContext";
+import { useEffect, useState } from "react";
+import styles from "../../styles/Tracker.module.scss";
+import { CoinList } from "../../lib/CoinGecko";
+import { CryptoState } from "../../lib/MainContext";
 
 export default function SignUp() {
   const { currency, symbol } = CryptoState();
@@ -22,12 +22,23 @@ export default function SignUp() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
+  const [perPage, setPerPage] = useState(15);
+
+  const [exchanges, setExchanges] = useState([]);
 
   const fetchCoins = async () => {
     setLoading(true);
     const { data } = await axios.get(CoinList(currency));
     setCoins(data);
+    setLoading(false);
+  };
+
+  const fetchExchanges = async () => {
+    setLoading(true);
+    const { data } = await axios.get(
+      `https://api.coingecko.com/api/v3/exchanges?per_page=20&page=1`
+    );
+    setExchanges(data);
     setLoading(false);
   };
 
@@ -54,17 +65,15 @@ export default function SignUp() {
   );
 
   useEffect(() => {
-    if (user && !isLoading) {
+    if (user && !isLoading && favorites.length != 0) {
       const response = supabaseClient
         .from<any>("favorites")
         .update({ favorites: favorites })
-        .match({ id: user.id });
-      /* */
-      /* NOT UPDATING DB */
-      /* */
-      console.log(response);
+        .match({ id: user.id })
+        .then((res) => {
+          return;
+        });
     }
-    console.log(favorites);
   }, [favorites]);
 
   return (
@@ -75,7 +84,7 @@ export default function SignUp() {
         <link rel="icon" href="/small_logo.png" />
       </Head>
 
-      <main className="h-screen w-screen flex flex-col justify-center items-center text-center">
+      <main className="flex flex-col items-center text-center pt-24">
         <div className="max-w-xl">
           <h1 className="text-4xl tracking-wider mb-3">Best Crypto Tracker</h1>
           <span>
@@ -88,7 +97,7 @@ export default function SignUp() {
         <input
           type="text"
           placeholder="Search"
-          className="input input-primary mt-10 mb-5"
+          className="input input-primary mt-10 mb-5 px-3 py-5"
           onChange={(e) => {
             setSearch(e.target.value);
             setPage(1);
@@ -96,6 +105,17 @@ export default function SignUp() {
         />
 
         <div className="max-w-4xl">
+          <div className="flex my-6">
+            <Link href="/tracker/coins">
+              <button className="btn btn-ghost">Cryptocurrencies</button>
+            </Link>
+            <Link href="/tracker/exchanges">
+              <button className="btn btn-ghost">Exchanges</button>
+            </Link>
+            <Link href="/tracker/favorites">
+              <button className="btn btn-ghost">Favorites</button>
+            </Link>
+          </div>
           <div className="flex my-2 px-6">
             <div className={`${styles.id} pl-6`}>#</div>
             <div className={`${styles.name}`}>Name</div>
@@ -127,14 +147,15 @@ export default function SignUp() {
                     ? favorites.includes(coin.id)
                     : false;
                   return (
-                    <div
-                      // href={{
-                      //   pathname: `/coins/${coin.id}`,
-                      //   query: { id: `${coin.id}` },
-                      // }}
-                      // as={`/coins/${coin.id}`}
+                    <>
+                      {/* <Link
+                      href={{
+                        pathname: `/coins/${coin.id}`,
+                        query: { id: `${coin.id}` },
+                      }}
+                      as={`/coins/${coin.id}`}
                       key={coin.id}
-                    >
+                    > */}
                       <div className={styles.coinContainer}>
                         <div className={`${styles.id}`}>
                           <i
@@ -220,7 +241,8 @@ export default function SignUp() {
                           {coin.market_cap.toLocaleString()}
                         </div>
                       </div>
-                    </div>
+                      {/* </Link> */}
+                    </>
                   );
                 })
             )}
@@ -255,95 +277,3 @@ export default function SignUp() {
     </div>
   );
 }
-
-// export default function CoinsTable() {
-
-//               <TableBody>
-//                 {handleSearch()
-//                   .slice((page - 1) * 10, (page - 1) * 10 + 10)
-//                   .map((row) => {
-//                     const profit = row.price_change_percentage_24h > 0;
-//                     return (
-//                       <TableRow
-//                         onClick={() => history.push(`/coins/${row.id}`)}
-//                         className={classes.row}
-//                         key={row.name}
-//                       >
-//                         <TableCell
-//                           component="th"
-//                           scope="row"
-//                           style={{
-//                             display: "flex",
-//                             gap: 15,
-//                           }}
-//                         >
-//                           <img
-//                             src={row?.image}
-//                             alt={row.name}
-//                             height="50"
-//                             style={{ marginBottom: 10 }}
-//                           />
-//                           <div
-//                             style={{ display: "flex", flexDirection: "column" }}
-//                           >
-//                             <span
-//                               style={{
-//                                 textTransform: "uppercase",
-//                                 fontSize: 22,
-//                               }}
-//                             >
-//                               {row.symbol}
-//                             </span>
-//                             <span style={{ color: "darkgrey" }}>
-//                               {row.name}
-//                             </span>
-//                           </div>
-//                         </TableCell>
-//                         <TableCell align="right">
-//                           {symbol}{" "}
-//                           {numberWithCommas(row.current_price.toFixed(2))}
-//                         </TableCell>
-//                         <TableCell
-//                           align="right"
-//                           style={{
-//                             color: profit > 0 ? "rgb(14, 203, 129)" : "red",
-//                             fontWeight: 500,
-//                           }}
-//                         >
-//                           {profit && "+"}
-//                           {row.price_change_percentage_24h.toFixed(2)}%
-//                         </TableCell>
-//                         <TableCell align="right">
-//                           {symbol}{" "}
-//                           {numberWithCommas(
-//                             row.market_cap.toString().slice(0, -6)
-//                           )}
-//                           M
-//                         </TableCell>
-//                       </TableRow>
-//                     );
-//                   })}
-//               </TableBody>
-//             </Table>
-//           )}
-//         </TableContainer>
-
-//         {/* Comes from @material-ui/lab */}
-//         <Pagination
-//           count={(handleSearch()?.length / 10).toFixed(0)}
-//           style={{
-//             padding: 20,
-//             width: "100%",
-//             display: "flex",
-//             justifyContent: "center",
-//           }}
-//           classes={{ ul: classes.pagination }}
-//           onChange={(_, value) => {
-//             setPage(value);
-//             window.scroll(0, 450);
-//           }}
-//         />
-//       </Container>
-//     </ThemeProvider>
-//   );
-// }

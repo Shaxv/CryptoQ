@@ -24,7 +24,8 @@ export default function SignUp() {
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(15);
 
-  const [exchanges, setExchanges] = useState([]);
+  const [total, setTotal] = useState([]);
+  const [totalLoading, setTotalLoading] = useState(true);
 
   const fetchCoins = async () => {
     setLoading(true);
@@ -33,13 +34,11 @@ export default function SignUp() {
     setLoading(false);
   };
 
-  const fetchExchanges = async () => {
-    setLoading(true);
-    const { data } = await axios.get(
-      `https://api.coingecko.com/api/v3/exchanges?per_page=20&page=1`
-    );
-    setExchanges(data);
-    setLoading(false);
+  const fetchTotal = async () => {
+    setTotalLoading(true);
+    const { data } = await axios.get("https://api.coingecko.com/api/v3/global");
+    setTotal(data.data);
+    setTotalLoading(false);
   };
 
   useEffect(() => {
@@ -47,6 +46,7 @@ export default function SignUp() {
   }, [currency]);
 
   useEffect(() => {
+    fetchTotal();
     if (user && !isLoading) {
       const response = supabaseClient
         .from<any>("favorites")
@@ -91,20 +91,86 @@ export default function SignUp() {
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
             ever since the 1500s.
+            <br />
+            <br />
+            There are{" "}
+            <b>{totalLoading ? "" : total["active_cryptocurrencies"]}</b>{" "}
+            Cryptocurrencies out there!
           </span>
         </div>
-
-        <input
-          type="text"
-          placeholder="Search"
-          className="input input-primary mt-10 mb-5 px-3 py-5"
-          onChange={(e) => {
-            setSearch(e.target.value);
-            setPage(1);
-          }}
-        />
-
         <div className="max-w-4xl">
+          {totalLoading ? (
+            ""
+          ) : (
+            <div className="flex w-full justify-center items-center gap-x-3 my-5">
+              <div
+                className={`w-full text-left rounded-md py-2 px-4 ${
+                  total["market_cap_change_percentage_24h_usd"] >= 0
+                    ? "bg-success"
+                    : "bg-error"
+                } bg-opacity-20`}
+              >
+                <h2 className="mb-2 text-gray tracking-wide text-sm">
+                  Market Cap
+                </h2>
+                <div className="flex items-center gap-x-3">
+                  <span className="font-bold text-lg">
+                    {symbol}
+                    {total["total_market_cap"][
+                      currency.toLowerCase()
+                    ].toLocaleString()}
+                  </span>
+                  {total["market_cap_change_percentage_24h_usd"] >= 0 ? (
+                    <div className="bg-success bg-opacity-20 w-max p-1 rounded-md">
+                      <i className="fas fa-angle-up text-success" />{" "}
+                      <span className="text-success font-bold">
+                        {total["market_cap_change_percentage_24h_usd"].toFixed(
+                          2
+                        )}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="bg-error bg-opacity-20 w-max p-1 rounded-md">
+                      <i className="fas fa-angle-down text-error" />{" "}
+                      <span className="text-error font-bold">
+                        {total["market_cap_change_percentage_24h_usd"].toFixed(
+                          2
+                        )}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="w-full text-left rounded-md py-2 px-4 bg-gray bg-opacity-25">
+                <h2 className="mb-2 text-gray tracking-wide text-sm">
+                  Volume 24h
+                </h2>
+                <span className="font-bold text-lg">
+                  {symbol}
+                  {total["total_volume"][
+                    currency.toLowerCase()
+                  ].toLocaleString()}
+                </span>
+              </div>
+              <div className="w-full text-left rounded-md py-2 px-4 bg-orange bg-opacity-40">
+                <h2 className="mb-2 text-gray tracking-wide text-sm">
+                  BTC Dominance
+                </h2>
+                <span className="font-bold text-lg">
+                  {total["market_cap_percentage"]["btc"].toFixed(2)}%
+                </span>
+              </div>
+            </div>
+          )}
+          <input
+            type="text"
+            placeholder="Search"
+            className="input input-primary mt-10 mb-5 px-3 py-5 w-full"
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
+          />
           <div className="flex my-6">
             <Link href="/tracker/coins">
               <button className="btn btn-ghost">Cryptocurrencies</button>
@@ -221,14 +287,14 @@ export default function SignUp() {
                           {coin.price_change_percentage_24h >= 0 ? (
                             <div className="bg-success bg-opacity-20 w-max p-1 rounded-md">
                               <i className="fas fa-angle-up text-success" />{" "}
-                              <span className="text-success">
+                              <span className="text-success font-bold tracking-wide">
                                 {coin.price_change_percentage_24h.toFixed(2)}
                               </span>
                             </div>
                           ) : (
                             <div className="bg-error bg-opacity-20 w-max p-1 rounded-md">
                               <i className="fas fa-angle-down text-error" />{" "}
-                              <span className="text-error">
+                              <span className="text-error font-bold tracking-wide">
                                 {coin.price_change_percentage_24h
                                   .toFixed(2)
                                   .slice(1)}

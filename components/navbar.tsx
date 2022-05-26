@@ -69,6 +69,9 @@ const Navbar = () => {
             user ? (
               <Link href="/dashboard">
                 <a className="btn btn-outline">Dashboard</a>
+                {/*  */}
+                {/* Legördülő kereső menü kriptokra */}
+                {/*  */}
               </Link>
             ) : (
               <Link href="/signin">

@@ -52,7 +52,6 @@ export default function SignUp() {
             ever since the 1500s.
           </span>
         </div>
-
         <div className="max-w-4xl">
           <div className="flex my-6">
             <Link href="/tracker/coins">
@@ -66,7 +65,7 @@ export default function SignUp() {
             </Link>
           </div>
           <div className="flex my-2 px-6">
-            <div className={`${styles.id} pl-6`}>#</div>
+            <div className={`${styles.id}`}>#</div>
             <div className={`${styles.name}`}>Name</div>
             <div className={`${styles.price}`}>24h Volume</div>
             <div className={`${styles.day}`}>Year</div>
@@ -108,6 +107,9 @@ export default function SignUp() {
                             <span className="ml-2">{exchange.name}</span>
                           </div>
                           <div className={`${styles.price}`}>
+                            {/*  */}
+                            {/* Convert to selected Currency!! */}
+                            {/*  */}
                             BTC
                             {exchange.trade_volume_24h_btc.toLocaleString()}
                           </div>

@@ -7,6 +7,15 @@ const nextConfig = {
   },
   images: {
     domains: ["assets.coingecko.com"]
+  },
+  async redirects() {
+    return [
+      {
+        source: "/tracker",
+        destination: "/tracker/coins",
+        permanent: true,
+      }
+    ]
   }
 }
 

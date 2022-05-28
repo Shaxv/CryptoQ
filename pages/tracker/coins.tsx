@@ -11,7 +11,7 @@ import styles from "../../styles/Tracker.module.scss";
 import { CoinList } from "../../lib/CoinGecko";
 import { CryptoState } from "../../lib/MainContext";
 
-export default function SignUp() {
+export default function Coins() {
   const { currency, symbol } = CryptoState();
   const router = useRouter();
 

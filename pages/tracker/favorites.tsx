@@ -11,7 +11,7 @@ import styles from "../../styles/Tracker.module.scss";
 import { CoinList, SingleCoin } from "../../lib/CoinGecko";
 import { CryptoState } from "../../lib/MainContext";
 
-export default function SignUp() {
+export default function Favorites() {
   const { currency, symbol } = CryptoState();
   const router = useRouter();
 
@@ -36,29 +36,32 @@ export default function SignUp() {
 
   const fetchFavorites = () => {
     if (user && !isLoading) {
+      setLoading(true);
       const response = supabaseClient
         .from<any>("favorites")
         .select("favorites")
         .match({ id: user.id });
       response.then((res) => {
-        res.data.at(0)["favorites"].forEach(async (id) => {
-          const { data } = await axios.get(SingleCoin(id));
-          setCoins((prevArray) => [...prevArray, data]);
-        });
-        setFavorites(res.data.at(0)["favorites"]);
+        if (!loading) {
+          setLoading(false);
+          setFavorites(res.data.at(0)["favorites"]);
+        }
       });
     }
   };
 
   useEffect(() => {
+    favorites.forEach(async (id) => {
+      const { data } = await axios.get(SingleCoin(id));
+      setCoins((prevArray) => [...prevArray, data]);
+    });
+  }, [favorites]);
+
+  useEffect(() => {
     fetchTotal();
-    if (favorites.length === 0) {
+    if (!isLoading) {
       fetchFavorites();
     }
-
-    /*  */
-    /* NOT WORKING */
-    /*  */
   }, [user, isLoading]);
 
   return (

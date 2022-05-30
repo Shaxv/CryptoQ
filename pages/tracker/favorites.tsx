@@ -72,7 +72,7 @@ export default function Favorites() {
         <link rel="icon" href="/small_logo.png" />
       </Head>
 
-      <main className="flex flex-col items-center text-center pt-24">
+      <main className="flex flex-col items-center text-center pt-24 min-h-screen">
         <div className="max-w-xl">
           <h1 className="text-4xl tracking-wider mb-3">Best Crypto Tracker</h1>
           <span>

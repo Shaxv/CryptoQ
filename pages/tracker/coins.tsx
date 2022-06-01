@@ -19,6 +19,7 @@ export default function Coins() {
   const [favorites, setFavorites] = useState([]);
 
   const [coins, setCoins] = useState([]);
+  const [filteredCoins, setFilteredCoins] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -27,10 +28,14 @@ export default function Coins() {
   const [total, setTotal] = useState([]);
   const [totalLoading, setTotalLoading] = useState(true);
 
+  /* ascId, descId ; ascName, descName ; ascPrice, descPrice ; asc24, desc24 ; ascCap, descCap */
+  const [order, setOrder] = useState("ascId");
+
   const fetchCoins = async () => {
     setLoading(true);
     const { data } = await axios.get(CoinList(currency));
     setCoins(data);
+    setFilteredCoins(data);
     setLoading(false);
   };
 
@@ -58,11 +63,23 @@ export default function Coins() {
     }
   }, [user, isLoading]);
 
-  const filteredCoins = coins.filter(
-    (coin) =>
-      coin.name.toLowerCase().includes(search.toLowerCase()) ||
-      coin.symbol.toLowerCase().includes(search.toLowerCase())
-  );
+  useEffect(() => {
+    setFilteredCoins(
+      [...coins]
+        .sort((a, b) =>
+          order == "ascId"
+            ? a.market_cap_rank - b.market_cap_rank
+            : order == "descId"
+            ? a.market_cap_rank + b.market_cap_rank
+            : ""
+        )
+        .filter(
+          (coin) =>
+            coin.name.toLowerCase().includes(search.toLowerCase()) ||
+            coin.symbol.toLowerCase().includes(search.toLowerCase())
+        )
+    );
+  }, [order, search]);
 
   useEffect(() => {
     if (user && !isLoading && favorites.length != 0) {
@@ -181,6 +198,15 @@ export default function Coins() {
             <Link href="/tracker/favorites">
               <button className="btn btn-ghost">Favorites</button>
             </Link>
+            <button
+              className="btn btn-ghost"
+              onClick={() => setOrder("descId")}
+            >
+              To DescId
+            </button>
+            <button className="btn btn-ghost" onClick={() => setOrder("ascId")}>
+              To AscId
+            </button>
           </div>
           <div className="flex my-2 px-6">
             <div className={`${styles.id} pl-6`}>#</div>

@@ -7,9 +7,9 @@ import toast from "react-hot-toast";
 import { useUser } from "@supabase/supabase-auth-helpers/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import styles from "../../styles/Tracker.module.scss";
-import { CoinList } from "../../lib/CoinGecko";
-import { CryptoState } from "../../lib/MainContext";
+import styles from "../../../styles/Tracker.module.scss";
+import { CoinList } from "../../../lib/CoinGecko";
+import { CryptoState } from "../../../lib/MainContext";
 
 export default function Coins() {
   const { currency, symbol } = CryptoState();

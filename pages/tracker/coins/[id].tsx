@@ -7,10 +7,13 @@ import toast from "react-hot-toast";
 import { useUser } from "@supabase/supabase-auth-helpers/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import styles from "../styles/Tracker.module.scss";
-import { CryptoState } from "../../lib/MainContext";
-import { SingleCoin, HistoricalChart } from "../../lib/CoinGecko";
+import styles from "../../../styles/Tracker.module.scss";
+import { CryptoState } from "../../../lib/MainContext";
+import { SingleCoin, HistoricalChart } from "../../../lib/CoinGecko";
 import { Line } from "react-chartjs-2";
+
+import { AdvancedChart } from "react-tradingview-embed";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -156,7 +159,6 @@ export default function Coin() {
                 {removeHttp(coin["links"]["homepage"][0])}
               </a>
             </div>
-
             <div className="flex justify-between max-w-[225px] mt-5">
               <div className="text-gray tracking-wider">Community</div>
 
@@ -184,7 +186,6 @@ export default function Coin() {
                 ""
               )}
             </div>
-
             <div className="flex justify-between max-w-[225px]">
               <div className="text-gray tracking-wider">Explorers</div>
               <a
@@ -194,7 +195,16 @@ export default function Coin() {
                 {removeHttp(coin["links"]["blockchain_site"][0])}
               </a>
             </div>
-
+            ({" "}
+            <AdvancedChart
+              widgetProps={{
+                interval: "1D",
+                theme: "dark",
+                width: "100%",
+                symbol: id + "USD",
+              }}
+            />{" "}
+            )
             {!historicData || flag === false ? (
               <progress className="progress w-full m-10 max-w-lg mx-auto" />
             ) : (
